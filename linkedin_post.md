@@ -1,4 +1,4 @@
-Is an MBA actually worth it? I built B-School Atlas to answer that with numbers, not opinions.
+﻿Is an MBA actually worth it? I built B-School Atlas to answer that with numbers, not opinions.
 
 Every MBA applicant asks the same questions: where should I study, which colleges can my score get me into, and how long until the degree pays for itself. The answers are scattered across dozens of sites. So I put them in one place.
 
@@ -13,7 +13,7 @@ What it does:
 
 Every figure shows its source, and nothing you type leaves your device.
 
-Try it: https://<your-username>.github.io/bschool-atlas/
+Try it: https://vedhrishi.github.io/bschool-atlas/
 
 Cut-offs and fees are approximate and change every year, so always confirm with the college. I'd love feedback from anyone who has been through admissions.
 
