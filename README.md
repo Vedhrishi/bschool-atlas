@@ -1,10 +1,10 @@
-﻿# B-School Atlas
+# B-School Atlas
 
 **Is an MBA worth it?** A web app that helps MBA applicants compare destinations worldwide, check which Indian B-schools their entrance-exam score can reach, and see how many years the degree takes to pay for itself.
 
 Built by **[Pasupuleti VedhRishi](https://www.linkedin.com/in/vedhrishi-pasupuleti)**.
 
-**Live site:** https://vedhrishi.github.io/bschool-atlas/*
+**Live site:** https://vedhrishi.github.io/bschool-atlas/
 
 ![Home](docs/home.png)
 
@@ -33,7 +33,7 @@ Built by **[Pasupuleti VedhRishi](https://www.linkedin.com/in/vedhrishi-pasupule
 ## How the numbers work
 - **Cash flows:** each year compares the MBA path (no salary while studying, tuition and living costs, then the post-MBA salary minus loan repayments) with staying in the current job. Both are after a flat tax rate.
 - **NPV** discounts those yearly differences. **Payback** is when the cumulative difference turns positive. **IRR** and the **break-even salary** are found by bisection.
-- **Projections:** a figure reported in one month is moved to any other month with local inflation plus an adjustable extra growth rate. Exchange rates start from ECB reference rates (23 Oct 2026) and drift with each currency's inflation gap against the US dollar (relative purchasing-power parity).
+- **Projections:** a figure reported in one month is moved to any other month with local inflation plus an adjustable extra growth rate. Exchange rates start from ECB reference rates (23 Oct 2026; INR and ZAR come from other sources, noted in the data) and drift with each currency's inflation gap against the US dollar (relative purchasing-power parity).
 
 Code: [`finance.js`](finance.js) (model), [`project.js`](project.js) (projections), [`app.js`](app.js) (calculator), [`map.js`](map.js) (map and home), [`india.js`](india.js) (India page), [`i18n.js`](i18n.js) (translations), [`motion.js`](motion.js) (animation).
 
@@ -57,4 +57,4 @@ Open `index.html` in a browser, or serve the folder (`python3 -m http.server`). 
 Edit the figure, its `asOf` month and its source in `data/countries.js` or `data/india.js`, update `checked`, run `node --test`, and push. The site redeploys automatically.
 
 ## License
-MIT Â© [Pasupuleti VedhRishi](https://www.linkedin.com/in/vedhrishi-pasupuleti)
+MIT © [Pasupuleti VedhRishi](https://www.linkedin.com/in/vedhrishi-pasupuleti)
