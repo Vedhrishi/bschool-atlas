@@ -20,5 +20,5 @@ This folder is a complete git repository with one clean commit by **Pasupuleti V
 > 8. Commit those edits as "Add live site link" and push. Then open the live URL and tell me it works.
 
 ## After it's live
-- **Resume line:** *B-School Atlas*: web app for MBA applicants to compare global programmes, find Indian B-schools by entrance-exam score, and estimate payback, NPV and IRR. Plain JavaScript, 7 languages, 27 automated tests, CI/CD with GitHub Actions. Add the live link and the repo link.
+- **Resume line:** *B-School Atlas*: web app for MBA applicants to compare global programmes, find Indian B-schools by entrance-exam score, and estimate payback, NPV and IRR. Plain JavaScript, 7 languages, 30 automated tests, CI/CD with GitHub Actions. Add the live link and the repo link.
 - **Future updates:** edit, commit and push. The site redeploys automatically after the tests pass.

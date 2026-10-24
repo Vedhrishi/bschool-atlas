@@ -30,17 +30,35 @@
 <canvas id="sky" aria-hidden="true"></canvas>
 <canvas id="fx" aria-hidden="true"></canvas>
 
+<div class="app">
+<aside id="sidebar" class="sidebar" aria-label="Site navigation">
+  <div class="sb-head">
+    <a class="brand" href="#overview"><span class="brand-mark" aria-hidden="true"></span>B-School Atlas</a>
+    <button type="button" class="sb-close ghost" id="sbClose" data-i18n-aria="sb.close" aria-label="Close menu">✕</button>
+  </div>
+  <p class="sb-tag" data-i18n="sb.tagline">MBA cost, cut-offs and payback in one place</p>
+  <div class="sb-search" role="search">
+    <label class="sr" for="navSearch" data-i18n="sb.search">Search colleges, exams, countries</label>
+    <input type="search" id="navSearch" autocomplete="off" spellcheck="false" data-i18n-ph="sb.search" placeholder="Search colleges, exams, countries" role="combobox" aria-expanded="false" aria-controls="navResults" aria-autocomplete="list">
+    <kbd class="sb-kbd" aria-hidden="true">/</kbd>
+    <div id="navResults" class="sb-results" role="listbox" hidden></div>
+  </div>
+  <div class="sb-rec">
+    <p class="sb-label" data-i18n="sb.rec">Recommended searches</p>
+    <div class="sb-chips" id="recChips"></div>
+  </div>
+  <nav class="sb-nav" id="sbNav" aria-label="Topics"></nav>
+  <div class="sb-foot">
+    <label class="langpick"><span data-i18n="lang">Language</span><select id="lang"></select></label>
+  </div>
+</aside>
+<div class="sb-scrim" id="sbScrim" hidden></div>
+
 <div class="shell">
 <header class="top">
-  <a class="brand" href="#map"><span class="brand-mark" aria-hidden="true"></span>B-School Atlas</a>
-  <div class="top-right">
-    <nav class="nav" aria-label="Views">
-      <a href="#map" id="navMap" data-i18n="nav.map">World map</a>
-      <a href="#calc" id="navCalc" data-i18n="nav.calc">Calculator</a>
-      <a href="#india" id="navIndia" data-i18n="nav.india">India &amp; exams</a>
-    </nav>
-    <label class="langpick"><span class="sr" data-i18n="lang">Language</span><select id="lang"></select></label>
-  </div>
+  <button type="button" class="menu-btn ghost" id="menuBtn" aria-controls="sidebar" aria-expanded="false" data-i18n-aria="sb.menu" aria-label="Menu"><span></span><span></span><span></span></button>
+  <a class="brand" href="#overview"><span class="brand-mark" aria-hidden="true"></span>B-School Atlas</a>
+  <button type="button" class="search-btn ghost" id="searchBtn" data-i18n-aria="sb.search" aria-label="Search">⌕</button>
 </header>
 
 <section class="hero" id="hero">
@@ -91,7 +109,7 @@
     <p class="note" data-i18n="rank.note">Same assumptions as the 30-second check. Tap a bar for details.</p>
   </section>
 
-  <section class="card mapcard">
+  <section class="card mapcard" id="atlas">
     <div class="maphead">
       <h2 data-i18n="map.title">Where do you want to study?</h2>
       <p class="note" data-i18n="map.hint">Glowing countries have sourced data. Tap a continent, then a country.</p>
@@ -117,6 +135,12 @@
   <section class="card" id="contpanel" hidden></section>
   <section class="card" id="countrypanel" hidden></section>
   <section class="card" id="fxpanel"></section>
+
+  <section class="card" id="sources">
+    <h2 data-i18n="src.title">Data &amp; sources</h2>
+    <p class="simple" data-i18n="src.lede">Every number on this site comes from a named source with a date. Figures are approximate; always confirm with the school.</p>
+    <div id="sourcesList" class="srcgrid"></div>
+  </section>
 </main>
 
 <main id="calc" hidden>
@@ -157,7 +181,7 @@
 
   <div class="cols" id="scenarios"></div>
 
-  <details class="card gloss">
+  <details class="card gloss" id="glossary">
     <summary data-i18n="gloss.title">What do these words mean?</summary>
     <dl>
       <div><dt data-i18n="gloss.npv.t">NPV</dt><dd data-i18n="gloss.npv.d"></dd></div>
@@ -206,7 +230,7 @@
 </main>
 
 <main id="india" hidden>
-  <section class="card finder">
+  <section class="card finder" id="finderCard">
     <h2 data-i18n="in.title">Find colleges for your score</h2>
     <p class="simple" data-i18n="in.lede">Choose your exam, enter your percentile or score, and see where you stand.</p>
     <div class="examtabs" id="examTabs" role="tablist"></div>
@@ -237,18 +261,18 @@
     <div id="shortList"></div>
   </section>
 
-  <section class="card">
+  <section class="card" id="chartCard">
     <h2 data-i18n="in.chartTitle">Fee vs salary</h2>
     <p class="simple" data-i18n="in.chartNote">Each dot is a college. Dots higher and further left pay back faster. Tap a dot to add it to your shortlist.</p>
     <div id="feeChart" class="scroll"></div>
   </section>
 
-  <section class="card">
+  <section class="card" id="examsCard">
     <h2 data-i18n="in.examsTitle">Entrance exams at a glance</h2>
     <div class="examgrid" id="examGrid"></div>
   </section>
 
-  <section class="card">
+  <section class="card" id="collegesCard">
     <div class="maphead">
       <h2 data-i18n="in.listTitle">Top Indian business schools</h2>
       <label class="search"><span class="sr" data-i18n="in.search">Search</span><input type="search" id="collegeSearch" data-i18n-ph="in.search"></label>
@@ -264,6 +288,8 @@
   <p class="muted" data-i18n="footer.tr">Translations are machine-assisted; source notes stay in English.</p>
 </footer>
 </div>
+</div>
+<button type="button" class="to-top" id="toTop" data-i18n-aria="sb.top" aria-label="Back to top" hidden>↑</button>
 
 <script src="i18n.js"></script>
 <script src="finance.js"></script>
@@ -271,6 +297,7 @@
 <script src="data/world.js"></script>
 <script src="data/countries.js"></script>
 <script src="data/india.js"></script>
+<script src="nav.js"></script>
 <script src="app.js"></script>
 <script src="map.js"></script>
 <script src="india.js"></script>

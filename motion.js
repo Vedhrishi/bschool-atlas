@@ -21,13 +21,13 @@
     W = cv.clientWidth; H = cv.clientHeight;
     cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
     g.setTransform(dpr, 0, 0, dpr, 0, 0);
-    glyphs = Array.from({ length: Math.round(Math.min(40, (W * H) / 30000)) }, () => newGlyph(true));
+    glyphs = Array.from({ length: Math.round(Math.min(22, (W * H) / 46000)) }, () => newGlyph(true));
     blobs = COLORS.map((c, i) => ({ c, x: Math.random(), y: Math.random(), r: .35 + Math.random() * .25, sx: .03 + Math.random() * .04, sy: .02 + Math.random() * .04, p: i * 1.3 }));
     trails = [];
   }
   function newGlyph(anywhere) {
     return { s: pick(SIGNS), c: pick(COLORS), x: Math.random() * W, y: anywhere ? Math.random() * H : H + 30, v: 8 + Math.random() * 16,
-      size: 13 + Math.random() * 24, a: .1 + Math.random() * .14, sway: Math.random() * 6.28, rot: (Math.random() - .5) * .6, spin: (Math.random() - .5) * .3 };
+      size: 13 + Math.random() * 24, a: .05 + Math.random() * .08, sway: Math.random() * 6.28, rot: (Math.random() - .5) * .6, spin: (Math.random() - .5) * .3 };
   }
   function newTrail() {
     const left = Math.random() < .5, y0 = H * (.12 + Math.random() * .65), y1 = y0 + (Math.random() - .5) * H * .35;
@@ -46,7 +46,7 @@
     blobs.forEach((b) => {
       const x = (b.x + Math.sin(clock * b.sx + b.p) * .18) * W, y = (b.y + Math.cos(clock * b.sy + b.p) * .18) * H, r = b.r * Math.max(W, H);
       const grd = g.createRadialGradient(x, y, 0, x, y, r);
-      grd.addColorStop(0, b.c + '24'); grd.addColorStop(1, b.c + '00');
+      grd.addColorStop(0, b.c + '1a'); grd.addColorStop(1, b.c + '00');
       g.fillStyle = grd; g.fillRect(0, 0, W, H);
     });
     g.globalCompositeOperation = 'source-over';
@@ -61,7 +61,7 @@
     });
     g.globalAlpha = 1;
     // Flight trails with a bright head.
-    if (trails.length < 4 && Math.random() < dt * .7) trails.push(newTrail());
+    if (trails.length < 2 && Math.random() < dt * .4) trails.push(newTrail());
     trails = trails.filter((tr) => tr.t < 1.25);
     trails.forEach((tr) => {
       tr.t += dt / tr.dur;

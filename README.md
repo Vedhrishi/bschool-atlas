@@ -12,6 +12,7 @@ Built by **[Pasupuleti VedhRishi](https://www.linkedin.com/in/vedhrishi-pasupule
 
 | Feature | Details |
 |---|---|
+| Sidebar and search | Every topic in one sidebar (a drawer on phones). Search across colleges, countries, exams, pages and glossary terms; type plain queries like "SC CAT 80", "XAT 90 female" or "under 10 lakh" for an instant filtered list, or tap a recommended search. Press `/` to search. |
 | World map | Pick a continent, then a country, to see sourced tuition and starting salaries for a leading programme (ISB, CEIBS, LBS, INSEAD, IE, Stanford GSB, Rotman, AGSM, UCT GSB). |
 | 30-second check | Enter today's salary and a destination; get payback period, value added (NPV) and a verdict. |
 | Payback ranking | Ranks every destination by how fast *your* salary pays it back. |
@@ -24,6 +25,8 @@ Built by **[Pasupuleti VedhRishi](https://www.linkedin.com/in/vedhrishi-pasupule
 | Map | India & exams | Calculator |
 |---|---|---|
 | ![Map](docs/map.png) | ![India](docs/india.png) | ![Calculator](docs/calculator.png) |
+
+![Search](docs/search.png)
 
 <img src="docs/mobile.png" width="260" alt="Mobile view">
 
@@ -43,7 +46,7 @@ Code: [`finance.js`](finance.js) (model), [`project.js`](project.js) (projection
 
 ## Tech
 - Plain HTML, CSS and JavaScript. No framework, no build step, no backend, no tracking.
-- 27 automated tests (`node --test`) covering the finance maths, projections and data integrity.
+- 30 automated tests (`node --test`) covering the finance maths, projections and data integrity.
 - GitHub Actions runs the tests and deploys to GitHub Pages on every push to `main`.
 - World map from [Natural Earth](https://www.naturalearthdata.com/) (public domain) via `world-atlas`; `npm install && npm run build:map` regenerates `data/world.js`.
 

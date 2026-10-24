@@ -18,7 +18,10 @@
   // Shortlist lives in this browser only.
   let shortlist = [];
   try { shortlist = JSON.parse(localStorage.getItem('bsa-shortlist') || '[]').filter((n) => byName[n]); } catch (e) {}
-  const saveShort = () => { try { localStorage.setItem('bsa-shortlist', JSON.stringify(shortlist)); } catch (e) {} };
+  const saveShort = () => {
+    try { localStorage.setItem('bsa-shortlist', JSON.stringify(shortlist)); } catch (e) {}
+    document.dispatchEvent(new CustomEvent('shortlistchange', { detail: shortlist.length }));
+  };
 
   const lakh = (v) => (v === null || v === undefined || !isFinite(v)) ? '—'
     : new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', notation: 'compact', maximumFractionDigits: 1 }).format(v);
@@ -208,7 +211,7 @@
     $('collegeTable').innerHTML = '<tr>' + th('nirf', t('th.rank')) + th('name', t('th.college')) + th('city', t('th.city')) + th('fee', t('in.fee')) + th('salary', t('in.salary')) + th('payback', t('in.paybackYou')) + '<th>' + t('th.exams') + '</th><th></th></tr>' +
       list.map((c) => {
         const cuts = Object.entries(c.cutoffs), on = shortlist.includes(c.name);
-        return '<tr><td class="num">' + (c.nirf || '—') + '</td><td><b>' + esc(c.name) + '</b></td><td>' + esc(c.city) + '</td><td class="num">' + lakh(c.fee && c.fee[0]) + '</td><td class="num">' + lakh(c.salary && c.salary[0]) + '</td><td class="num">' + paybackText(roi(c, p.salary)) + '</td><td>' +
+        return '<tr data-college="' + esc(c.name) + '"><td class="num">' + (c.nirf || '—') + '</td><td><b>' + esc(c.name) + '</b></td><td>' + esc(c.city) + '</td><td class="num">' + lakh(c.fee && c.fee[0]) + '</td><td class="num">' + lakh(c.salary && c.salary[0]) + '</td><td class="num">' + paybackText(roi(c, p.salary)) + '</td><td>' +
           (cuts.length ? cuts.map(([k, v]) => '<span class="chip">' + examLabel(k) + ' ' + fmtBand(k, v[0], v[1]) + '</span>').join(' ') : '<span class="muted">' + t('in.noCut') + '</span>') +
           '</td><td><button type="button" class="star' + (on ? ' on' : '') + '" data-star="' + esc(c.name) + '" aria-pressed="' + on + '" aria-label="' + esc(t('in.star')) + ': ' + esc(c.name) + '">★</button></td></tr>';
       }).join('');
@@ -243,6 +246,28 @@
   $('shortPrint').addEventListener('click', () => window.print());
   document.addEventListener('langchange', () => { finder(); examGrid(); });
 
+  // Used by the sidebar search and recommended searches.
+  window.IndiaPage = {
+    shortlistCount: () => shortlist.length,
+    setProfile(p) {
+      if (p.exam && EX[p.exam]) { exam = p.exam; tabs(); }
+      $('examScore').value = p.score !== undefined ? p.score : START[exam];
+      if (p.cat) $('pCat').value = p.cat;
+      if (p.gender !== undefined) $('pGender').value = p.gender;
+      $('pBudget').value = p.budget ? p.budget : '';
+      if (p.sort) $('pSort').value = p.sort;
+      finder();
+    },
+    focusCollege(name) {
+      $('collegeSearch').value = name;
+      table();
+      const row = document.querySelector('#collegeTable tr[data-college="' + name.replace(/"/g, '\\"') + '"]');
+      if (row) { row.classList.remove('flash'); void row.offsetWidth; row.classList.add('flash'); }
+    },
+    isIndian: (name) => ID.colleges.some((c) => c.name === name),
+  };
+
   $('examScore').value = START[exam];
   tabs(); finder(); examGrid();
+  document.dispatchEvent(new CustomEvent('shortlistchange', { detail: shortlist.length }));
 })();

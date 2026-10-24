@@ -285,13 +285,29 @@
   function setView(v) {
     document.body.dataset.view = v;
     $('home').hidden = v !== 'map'; $('calc').hidden = v !== 'calc'; $('india').hidden = v !== 'india';
-    $('navMap').setAttribute('aria-current', v === 'map' ? 'page' : 'false');
-    $('navCalc').setAttribute('aria-current', v === 'calc' ? 'page' : 'false');
-    $('navIndia').setAttribute('aria-current', v === 'india' ? 'page' : 'false');
+    document.dispatchEvent(new CustomEvent('viewchange', { detail: v }));
+  }
+  // Scroll a section into view once the view has rendered; hidden sections fall back to the view's top.
+  function scrollToSection(id, fallback) {
+    requestAnimationFrame(() => {
+      const el = $(id);
+      const target = el && !el.hidden ? el : fallback ? $(fallback) : null;
+      if (target) target.scrollIntoView({ block: 'start', behavior: 'smooth' }); else window.scrollTo(0, 0);
+    });
   }
   function route() {
     const h = location.hash.slice(1);
-    if (h === 'calc') { setView('calc'); window.MBAApp.refresh(); return; }
+    // Section anchors from the sidebar (#finder, #rates, #glossary...), defined in nav.js.
+    const sec = (window.NAV_SECTIONS || {})[h];
+    if (sec) {
+      setView(sec.view);
+      if (sec.view === 'calc') window.MBAApp.refresh();
+      if (sec.view === 'calc' && sec.id === 'glossary') $('glossary').open = true;
+      if (sec.view === 'map') { current = { cont: null, country: null }; frame(null); highlight(); renderPanels(); }
+      scrollToSection(sec.id, sec.fallback);
+      return;
+    }
+    if (h === 'calc') { setView('calc'); window.MBAApp.refresh(); window.scrollTo(0, 0); return; }
     if (h === 'india') { setView('india'); window.scrollTo(0, 0); return; }
     setView('map');
     const cont = Object.keys(CONT_SLUG).find((k) => CONT_SLUG[k] === h);
