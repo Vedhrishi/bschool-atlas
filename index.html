@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>B-School Atlas</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="B-School Atlas by Pasupuleti VedhRishi: compare MBA destinations worldwide with sourced fees and salaries, payback, NPV and a 10-year price outlook.">
+<meta name="author" content="Pasupuleti VedhRishi">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2323212b'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%23ffb547' stroke-width='3.5'/%3E%3Ccircle cx='16' cy='16' r='4' fill='%23ff6b81'/%3E%3C/svg%3E">
+<meta name="theme-color" content="#23212b">
+<!-- Share preview. __SITE_URL__ is replaced with the live address by the GitHub Pages workflow. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="B-School Atlas">
+<meta property="og:title" content="Is an MBA worth it? B-School Atlas">
+<meta property="og:description" content="Compare MBA destinations worldwide: sourced fees and salaries, payback, Indian B-school cut-offs by exam, and a 10-year price outlook.">
+<meta property="og:url" content="__SITE_URL__">
+<meta property="og:image" content="__SITE_URL__og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Is an MBA worth it? B-School Atlas">
+<meta name="twitter:image" content="__SITE_URL__og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Noto+Sans+Devanagari:wght@400;600&family=Noto+Sans+Arabic:wght@400;600&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<canvas id="sky" aria-hidden="true"></canvas>
+<canvas id="fx" aria-hidden="true"></canvas>
+
+<div class="shell">
+<header class="top">
+  <a class="brand" href="#map"><span class="brand-mark" aria-hidden="true"></span>B-School Atlas</a>
+  <div class="top-right">
+    <nav class="nav" aria-label="Views">
+      <a href="#map" id="navMap" data-i18n="nav.map">World map</a>
+      <a href="#calc" id="navCalc" data-i18n="nav.calc">Calculator</a>
+      <a href="#india" id="navIndia" data-i18n="nav.india">India &amp; exams</a>
+    </nav>
+    <label class="langpick"><span class="sr" data-i18n="lang">Language</span><select id="lang"></select></label>
+  </div>
+</header>
+
+<section class="hero" id="hero">
+  <div class="hero-copy">
+    <p class="eyebrow" data-i18n="hero.eyebrow">Sourced data · Global destinations · 10-year price outlook</p>
+    <h1><span data-i18n="hero.h1a">Is an MBA</span> <span class="hl" data-i18n="hero.h1b">worth it?</span></h1>
+    <p class="lede" data-i18n="hero.lede">Pick a destination. See what the degree costs, what it pays, and how many years until it pays you back.</p>
+    <p class="credit" data-i18n-html="hero.credit">Created by <a class="author" href="https://www.linkedin.com/in/vedhrishi-pasupuleti" target="_blank" rel="noopener"><b>Pasupuleti VedhRishi</b></a> to help MBA applicants weigh cost, salary and payback before they commit.</p>
+    <ol class="steps">
+      <li><b>1</b><span data-i18n="steps.1">Pick where you want to study</span></li>
+      <li><b>2</b><span data-i18n="steps.2">See cost, salary and payback</span></li>
+      <li><b>3</b><span data-i18n="steps.3">Decide with confidence</span></li>
+    </ol>
+    <ul class="trust">
+      <li data-i18n="trust.sourced">Every figure shows its source</li>
+      <li data-i18n="trust.private">Private: what you type stays on your device</li>
+      <li id="trustDate">Data checked Oct 2026</li>
+    </ul>
+  </div>
+
+  <form class="quick" id="quick" aria-labelledby="quickTitle">
+    <h2 id="quickTitle" data-i18n="q.title">30-second check</h2>
+    <div class="ticket">
+      <div class="route" aria-hidden="true">
+        <div><small data-i18n="q.from">From</small><span data-i18n="q.you">YOU</span></div>
+        <div class="path"></div>
+        <div class="to"><small id="qCity">London</small><span id="qCode">LHR</span></div>
+      </div>
+      <label><span data-i18n="q.salary">Your salary today (per year)</span><input type="number" id="qSalary" min="0" step="10000" value="1500000"></label>
+      <label><span data-i18n="q.currency">Currency</span><select id="qCur"></select></label>
+      <label><span data-i18n="q.dest">Destination</span><select id="qDest"></select></label>
+      <div class="qout" id="qOut" aria-live="polite"></div>
+    </div>
+    <p class="qnote" id="qNote"></p>
+    <button type="submit" id="qGo" data-i18n="q.go">Board the full calculator</button>
+  </form>
+
+  <div class="board" id="board" dir="ltr" data-i18n-aria="board.aria" aria-label="Departures board: tuition and starting salary by destination">
+    <div class="board-head"><span data-i18n="board.dest">Destination</span><span data-i18n="board.school">School</span><span data-i18n="board.tuition">Tuition</span><span data-i18n="board.salary">Salary</span><span data-i18n="board.data">Data</span></div>
+    <div id="boardRows"></div>
+  </div>
+</section>
+
+<main id="home" hidden>
+  <section class="card" id="rank">
+    <h2 data-i18n="rank.title">Where your salary pays back fastest</h2>
+    <div id="rankBars"></div>
+    <p class="note" data-i18n="rank.note">Same assumptions as the 30-second check. Tap a bar for details.</p>
+  </section>
+
+  <section class="card mapcard">
+    <div class="maphead">
+      <h2 data-i18n="map.title">Where do you want to study?</h2>
+      <p class="note" data-i18n="map.hint">Glowing countries have sourced data. Tap a continent, then a country.</p>
+    </div>
+    <details class="opts">
+    <summary data-i18n="more.options">Price options (optional)</summary>
+    <div class="grid controls">
+      <label><span data-i18n="map.month">Estimate prices for (month)</span><select id="atMonth"></select></label>
+      <label><span data-i18n="map.year">Year</span><select id="atYear"></select></label>
+      <label><span data-i18n="map.show">Show amounts in</span><select id="dispCur"></select></label>
+      <label><span data-i18n="map.fee">Fees rise above inflation (%/yr)</span><input type="number" id="feeExtra" step="0.5" value="2"></label>
+      <label><span data-i18n="map.sal">Salaries rise above inflation (%/yr)</span><input type="number" id="salExtra" step="0.5" value="1"></label>
+    </div>
+    </details>
+    <div id="mapwrap" dir="ltr">
+      <svg id="world" role="group" data-i18n-aria="map.aria" aria-label="World map. Choose a continent."></svg>
+      <div id="tip" role="tooltip" hidden></div>
+    </div>
+    <div class="chips" id="contlist"></div>
+    <p class="note" id="checked"></p>
+  </section>
+
+  <section class="card" id="contpanel" hidden></section>
+  <section class="card" id="countrypanel" hidden></section>
+  <section class="card" id="fxpanel"></section>
+</main>
+
+<main id="calc" hidden>
+  <section class="card" id="loadnote" hidden></section>
+  <section class="card" id="shared">
+    <h2 data-i18n="calc.assump">Your assumptions</h2>
+    <p class="simple" data-i18n="calc.simple"></p>
+    <div class="grid">
+      <label><span data-i18n="l.currency">Currency (converts all amounts)</span>
+        <select id="currency"><option>INR</option><option>USD</option><option>EUR</option><option>GBP</option><option>CNY</option><option>CAD</option><option>AUD</option><option>ZAR</option></select>
+      </label>
+      <label><span data-i18n="l.currentSalary">Your current salary (per year)</span><input type="number" id="currentSalary"></label>
+    </div>
+    <details class="opts">
+    <summary data-i18n="more.settings">More settings (optional)</summary>
+    <div class="grid">
+      <label><span data-i18n="l.currentGrowth">Salary growth without MBA (%/yr)</span><input type="number" id="currentGrowth" step="0.5"></label>
+      <label><span data-i18n="l.postGrowth">Salary growth after MBA (%/yr)</span><input type="number" id="postGrowth" step="0.5"></label>
+      <label><span data-i18n="l.discountRate">Discount rate (%, 8–10 typical)</span><input type="number" id="discountRate" step="0.5"></label>
+      <label><span data-i18n="l.horizonYears">Years to compare</span><input type="number" id="horizonYears" min="5" max="40"></label>
+      <label><span data-i18n="l.tax">Income tax rate (%)</span><input type="number" id="tax" min="0" max="60" step="1"></label>
+      <label><span data-i18n="l.inflation">Inflation (%/yr)</span><input type="number" id="inflation" step="0.5"></label>
+      <label><span data-i18n="l.targetPayback">Target payback (years)</span><input type="number" id="targetPayback" min="1" max="30"></label>
+      <label class="check"><input type="checkbox" id="real"> <span data-i18n="l.real">Show results in today's money (inflation-adjusted)</span></label>
+    </div>
+    <h2 class="sub2" data-i18n="calc.risk">Risk: what if the salary jump is different?</h2>
+    <div class="grid">
+      <label><span data-i18n="l.shiftLow">Pessimistic salary change (%)</span><input type="number" id="shiftLow" step="5"></label>
+      <label><span data-i18n="l.shiftHigh">Optimistic salary change (%)</span><input type="number" id="shiftHigh" step="5"></label>
+      <label><span data-i18n="l.pLow">Chance: pessimistic (%)</span><input type="number" id="pLow" min="0" max="100"></label>
+      <label><span data-i18n="l.pBase">Chance: base (%)</span><input type="number" id="pBase" min="0" max="100"></label>
+      <label><span data-i18n="l.pHigh">Chance: optimistic (%)</span><input type="number" id="pHigh" min="0" max="100"></label>
+    </div>
+    </details>
+  </section>
+
+  <section class="card banner" id="banner" aria-live="polite"></section>
+
+  <div class="cols" id="scenarios"></div>
+
+  <details class="card gloss">
+    <summary data-i18n="gloss.title">What do these words mean?</summary>
+    <dl>
+      <div><dt data-i18n="gloss.npv.t">NPV</dt><dd data-i18n="gloss.npv.d"></dd></div>
+      <div><dt data-i18n="gloss.payback.t">Payback period</dt><dd data-i18n="gloss.payback.d"></dd></div>
+      <div><dt data-i18n="gloss.irr.t">IRR</dt><dd data-i18n="gloss.irr.d"></dd></div>
+      <div><dt data-i18n="gloss.discount.t">Discount rate</dt><dd data-i18n="gloss.discount.d"></dd></div>
+      <div><dt data-i18n="gloss.breakeven.t">Break-even salary</dt><dd data-i18n="gloss.breakeven.d"></dd></div>
+      <div><dt data-i18n="gloss.emi.t">EMI</dt><dd data-i18n="gloss.emi.d"></dd></div>
+    </dl>
+  </details>
+
+  <section class="card">
+    <h2 data-i18n="calc.chart">Cumulative gain or loss versus not doing the MBA</h2>
+    <div id="chart" role="img" aria-label="Line chart of cumulative cash flow difference over time"></div>
+    <div id="legend"></div>
+  </section>
+
+  <details class="card deeper">
+  <summary data-i18n="more.deeper">Deeper analysis (optional)</summary>
+  <section class="sub">
+    <h2><span data-i18n="calc.sens">Sensitivity: NPV for different salaries and discount rates</span>
+      <select id="sensProg" aria-label="Program"><option value="A">A</option><option value="B">B</option></select>
+    </h2>
+    <div class="scroll"><table id="sens"></table></div>
+    <p class="note" data-i18n="calc.sensNote">Green means the MBA creates value, red means it destroys value.</p>
+  </section>
+
+  <section class="sub">
+    <h2 data-i18n="calc.loan">Loan repayment schedule (after the program)</h2>
+    <div class="cols" id="amort"></div>
+    <p class="note" data-i18n="calc.loanNote">Monthly EMI amortisation, shown per year.</p>
+  </section>
+  </details>
+
+  <section class="card actions">
+    <button id="copySummary" type="button" data-i18n="b.copySummary">Copy results summary</button>
+    <button id="copyTable" type="button" class="ghost" data-i18n="b.copyTable">Copy yearly table</button>
+    <button id="png" type="button" class="ghost" data-i18n="b.png">Make an image for LinkedIn</button>
+    <button id="csv" type="button" class="ghost web-only" data-i18n="b.csv">Download CSV</button>
+    <button id="print" type="button" class="ghost web-only" data-i18n="b.print">Print / Save as PDF</button>
+    <button id="reset" type="button" class="ghost" data-i18n="b.reset">Reset</button>
+    <span id="msg" role="status"></span>
+    <textarea id="copyout" rows="4" hidden aria-label="Text to copy"></textarea>
+    <figure id="cardwrap" hidden><img id="cardimg" alt="Summary card of your MBA comparison"><figcaption data-i18n="msg.png">Right-click or long-press the image to save it.</figcaption><a id="cardDl" class="web-only" download="bschool-atlas.png" data-i18n="b.dlImg">Download image</a></figure>
+  </section>
+</main>
+
+<main id="india" hidden>
+  <section class="card finder">
+    <h2 data-i18n="in.title">Find colleges for your score</h2>
+    <p class="simple" data-i18n="in.lede">Choose your exam, enter your percentile or score, and see where you stand.</p>
+    <div class="examtabs" id="examTabs" role="tablist"></div>
+    <div class="grid finder-in">
+      <label><span data-i18n="in.score">Your percentile or score</span><input type="number" id="examScore" step="any" inputmode="decimal"></label>
+      <label><span data-i18n="in.category">Category</span><select id="pCat"><option value="GEN">General</option><option value="EWS">EWS</option><option value="OBC">OBC-NCL</option><option value="SC">SC</option><option value="ST">ST</option><option value="PWD">PwD</option></select></label>
+      <label><span data-i18n="in.gender">Gender</span><select id="pGender"><option value="" data-i18n="in.gAny">Prefer not to say</option><option value="F" data-i18n="in.gF">Female</option><option value="M" data-i18n="in.gM">Male</option></select></label>
+      <label><span data-i18n="in.salaryNow">Your salary today (₹ per year, 0 if fresher)</span><input type="number" id="pSalary" min="0" step="50000" value="600000"></label>
+      <label><span data-i18n="in.budget">Max total fee (₹ lakh, optional)</span><input type="number" id="pBudget" min="0" step="1" inputmode="numeric"></label>
+      <label><span data-i18n="in.sort">Sort by</span><select id="pSort"><option value="payback" data-i18n="in.sPayback">Fastest payback</option><option value="fee" data-i18n="in.sFee">Lowest fee</option><option value="salary" data-i18n="in.sSalary">Highest salary</option><option value="nirf" data-i18n="in.sNirf">NIRF rank</option></select></label>
+    </div>
+    <p class="scale muted" id="examScale"></p>
+    <p class="headline" id="finderHead" aria-live="polite"></p>
+    <div id="finderOut"></div>
+    <p class="warn" data-i18n="in.warn"></p>
+  </section>
+
+  <section class="card" id="compareCard" hidden>
+    <h2 data-i18n="in.compareTitle">Side-by-side comparison</h2>
+    <div class="scroll"><table class="data" id="compareTable"></table></div>
+  </section>
+
+  <section class="card" id="shortCard">
+    <div class="maphead">
+      <h2 data-i18n="in.shortTitle">Your shortlist</h2>
+      <div class="actions"><button type="button" class="ghost" id="shortCopy" data-i18n="in.shortCopy">Copy shortlist</button><button type="button" class="ghost web-only" id="shortPrint" data-i18n="b.print">Print / Save as PDF</button><span class="muted" id="shortSaid" role="status"></span></div>
+    </div>
+    <div id="shortList"></div>
+  </section>
+
+  <section class="card">
+    <h2 data-i18n="in.chartTitle">Fee vs salary</h2>
+    <p class="simple" data-i18n="in.chartNote">Each dot is a college. Dots higher and further left pay back faster. Tap a dot to add it to your shortlist.</p>
+    <div id="feeChart" class="scroll"></div>
+  </section>
+
+  <section class="card">
+    <h2 data-i18n="in.examsTitle">Entrance exams at a glance</h2>
+    <div class="examgrid" id="examGrid"></div>
+  </section>
+
+  <section class="card">
+    <div class="maphead">
+      <h2 data-i18n="in.listTitle">Top Indian business schools</h2>
+      <label class="search"><span class="sr" data-i18n="in.search">Search</span><input type="search" id="collegeSearch" data-i18n-ph="in.search"></label>
+    </div>
+    <div class="scroll"><table class="data" id="collegeTable"></table></div>
+    <p class="note" data-i18n="in.nirfNote"></p>
+    <p class="note" id="indiaSources"></p>
+  </section>
+</main>
+
+<footer>
+  <p data-i18n-html="footer">© <a class="author" href="https://www.linkedin.com/in/vedhrishi-pasupuleti" target="_blank" rel="noopener">Pasupuleti VedhRishi</a>. B-School Atlas.</p>
+  <p class="muted" data-i18n="footer.tr">Translations are machine-assisted; source notes stay in English.</p>
+</footer>
+</div>
+
+<script src="i18n.js"></script>
+<script src="finance.js"></script>
+<script src="project.js"></script>
+<script src="data/world.js"></script>
+<script src="data/countries.js"></script>
+<script src="data/india.js"></script>
+<script src="app.js"></script>
+<script src="map.js"></script>
+<script src="india.js"></script>
+<script src="motion.js"></script>
+</body>
+</html>

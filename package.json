@@ -1,0 +1,19 @@
+{
+  "name": "bschool-atlas",
+  "version": "0.3.0",
+  "private": true,
+  "description": "B-School Atlas: compare MBA destinations, Indian B-school cut-offs by exam, and payback",
+  "scripts": {
+    "test": "node --test",
+    "build:map": "node scripts/build-map.js",
+    "build": "node scripts/build-artifact.js"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "countries-list": "^3.1.1",
+    "d3-geo": "3.1.1",
+    "i18n-iso-countries": "^7.14.0",
+    "topojson-client": "3.1.0",
+    "world-atlas": "2.0.2"
+  }
+}
