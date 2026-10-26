@@ -55,7 +55,8 @@ body { margin: 0; font: 16px/1.55 var(--f-body); background: var(--bg); color: v
 .eyebrow { margin: 0 0 10px; font: 600 .78rem/1.2 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--b); }
 h1 { margin: 0; font: 900 clamp(2.9rem, 8vw, 5.6rem)/.92 var(--f-display); letter-spacing: .01em; text-transform: uppercase; text-wrap: balance; }
 h1 .hl { color: var(--a); text-shadow: 0 0 28px var(--glow); display: inline-block; animation: glowpulse 3.6s ease-in-out infinite; }
-.lede { font-size: 1.15rem; max-width: 34em; margin: 16px 0 10px; color: var(--text); }
+.tagline60 { margin: 10px 0 0; font: 700 1.3rem/1.25 var(--f-display); letter-spacing: .01em; text-transform: uppercase; color: var(--a); }
+.lede { font-size: 1.15rem; max-width: 34em; margin: 12px 0 10px; color: var(--text); }
 .credit { margin: 0; color: var(--muted); font-size: .95rem; max-width: 40em; }
 .credit b { color: var(--text); font-weight: 600; }
 
@@ -396,11 +397,14 @@ a.author:hover { color: var(--c5); }
 a.author::after { content: " ↗"; font-size: .8em; color: var(--c5); }
 
 /* ---- App shell: sidebar + content ---- */
-.app { display: grid; grid-template-columns: 272px minmax(0, 1fr); min-height: 100vh; position: relative; z-index: 1; }
+body { --sbw: 272px; }
+body.sb-collapsed { --sbw: 0px; }
+.app { display: grid; grid-template-columns: var(--sbw) minmax(0, 1fr); transition: grid-template-columns .25s ease; min-height: 100vh; position: relative; z-index: 1; }
 .sidebar {
-  position: sticky; top: 0; height: 100vh; overflow-y: auto; z-index: 30;
+  position: sticky; top: 0; height: 100vh; overflow-y: auto; overflow-x: hidden; z-index: 30;
   display: flex; flex-direction: column; gap: 14px;
   padding-block: 18px 16px; padding-inline: 14px; padding-left: max(14px, env(safe-area-inset-left, 0px));
+  transition: opacity .2s ease;
   background: color-mix(in srgb, var(--card) 94%, transparent); border-inline-end: 1px solid var(--line); backdrop-filter: blur(10px);
 }
 .app .top { display: none; }
@@ -443,6 +447,15 @@ button.chip-btn:hover { border-color: var(--a); color: var(--a); transform: none
 button.to-top { position: fixed; inset-inline-end: max(18px, env(safe-area-inset-right, 0px)); bottom: calc(18px + env(safe-area-inset-bottom, 0px)); width: 44px; height: 44px; padding: 0; border-radius: 50%; z-index: 20; animation: none; font-size: 1.15rem; }
 #collegeTable tr.flash td { animation: rowflash 2.4s ease-out; }
 @keyframes rowflash { 0%, 45% { background: color-mix(in srgb, var(--a) 28%, transparent); } 100% { background: transparent; } }
+/* Application checklist */
+.chk-bar { height: 8px; border-radius: 999px; background: var(--card-2); overflow: hidden; margin: 10px 0 14px; }
+.chk-bar-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--c5), var(--good)); transition: width .3s ease; }
+.chk-list { display: grid; gap: 4px; margin-bottom: 10px; }
+.chk-item { display: flex; flex-direction: row; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 10px; cursor: pointer; font-size: .92rem; color: var(--text); }
+.chk-item:hover { background: var(--card-2); }
+.chk-item input { width: auto; accent-color: var(--good); }
+.chk-num { font: 600 .72rem var(--f-mono); color: var(--muted); min-width: 1.4em; }
+.chk-item.done span:last-child { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--good); }
 .srcgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
 .srcgrid ul { margin: 0; padding-inline-start: 18px; display: grid; gap: 4px; font-size: .86rem; }
 .srcgrid a { color: var(--c5); }
@@ -450,24 +463,43 @@ button.to-top { position: fixed; inset-inline-end: max(18px, env(safe-area-inset
 .menu-btn { gap: 4px; align-content: center; }
 .menu-btn span { display: block; width: 18px; height: 2px; background: currentColor; border-radius: 2px; }
 
+/* Desktop sidebar collapse rail */
+.sb-toggle {
+  position: fixed; top: 26px; inset-inline-start: var(--sbw); transform: translateX(-50%);
+  width: 26px; height: 26px; padding: 0; border-radius: 50%; z-index: 32;
+  background: var(--card); border: 1px solid var(--line); color: var(--muted);
+  display: inline-grid; place-items: center; font-size: .9rem; line-height: 1; cursor: pointer;
+  transition: inset-inline-start .25s ease, color .15s, border-color .15s; animation: none;
+}
+[dir="rtl"] .sb-toggle { transform: translateX(50%); }
+.sb-toggle:hover { color: var(--a); border-color: var(--a); transform: translateX(-50%) translateY(-1px); }
+[dir="rtl"] .sb-toggle:hover { transform: translateX(50%) translateY(-1px); }
+.sb-toggle-ic { display: inline-block; transition: transform .25s ease; }
+body.sb-collapsed .sidebar { opacity: 0; pointer-events: none; }
+body.sb-collapsed .sb-toggle .sb-toggle-ic { transform: rotate(180deg); }
+[dir="rtl"] .sb-toggle-ic { transform: rotate(180deg); }
+[dir="rtl"] body.sb-collapsed .sb-toggle .sb-toggle-ic { transform: rotate(0deg); }
+
 @media (max-width: 1023px) {
   .app { grid-template-columns: minmax(0, 1fr); }
   .sidebar {
     position: fixed; inset-block: 0; inset-inline-start: 0; width: min(330px, 86vw); height: auto;
     transform: translateX(-105%); transition: transform .25s ease; padding-top: calc(18px + env(safe-area-inset-top, 0px));
+    opacity: 1 !important; pointer-events: auto !important;
   }
   [dir="rtl"] .sidebar { transform: translateX(105%); }
   body.sb-open .sidebar { transform: none; }
   .sb-close { display: inline-grid; place-items: center; }
   .sb-kbd { display: none; }
+  .sb-toggle { display: none; }
   .app .top {
     display: flex; align-items: center; justify-content: space-between; gap: 10px;
     position: sticky; top: env(safe-area-inset-top, 0px); z-index: 15; padding-block: 10px; margin-block-end: 4px;
     background: color-mix(in srgb, var(--bg) 90%, transparent); backdrop-filter: blur(8px);
   }
 }
-@media (prefers-reduced-motion: reduce) { .sidebar { transition: none; } }
-@media print { .sidebar, .sb-scrim, .to-top { display: none !important; } .app { display: block; } }
+@media (prefers-reduced-motion: reduce) { .sidebar, .sb-toggle, .sb-toggle-ic, .app { transition: none; } }
+@media print { .sidebar, .sb-scrim, .sb-toggle, .to-top { display: none !important; } .app { display: block; } }
 
 .sb-sub > summary { font-weight: 400; color: var(--text); }
 /* With the sidebar taking width, the departures board sits under the intro at full width. */

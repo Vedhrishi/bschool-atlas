@@ -1,6 +1,6 @@
 # B-School Atlas
 
-**Is an MBA worth it?** A web app that helps MBA applicants compare destinations worldwide, check which Indian B-schools their entrance-exam score can reach, and see how many years the degree takes to pay for itself.
+**Your complete MBA picture in 60 seconds.** A web app that helps MBA applicants compare destinations worldwide, check which Indian B-schools their entrance-exam score can reach, and see how many years the degree takes to pay for itself.
 
 Built by **[Pasupuleti VedhRishi](https://www.linkedin.com/in/vedhrishi-pasupuleti)**.
 
@@ -12,9 +12,10 @@ Built by **[Pasupuleti VedhRishi](https://www.linkedin.com/in/vedhrishi-pasupule
 
 | Feature | Details |
 |---|---|
-| Sidebar and search | Every topic in one sidebar (a drawer on phones). Search across colleges, countries, exams, pages and glossary terms; type plain queries like "SC CAT 80", "XAT 90 female" or "under 10 lakh" for an instant filtered list, or tap a recommended search. Press `/` to search. |
+| Sidebar and search | Every topic in one sidebar, collapsible on desktop (press `[` or the rail toggle to open/close it) and a drawer on phones. Search across colleges, countries, exams, pages and glossary terms; type plain queries like "SC CAT 80", "XAT 90 female" or "under 10 lakh" for an instant filtered list, or tap a recommended search. Press `/` to search. |
+| Application checklist | A 14-step tracker from shortlisting through accepting your offer — exam registration, SOP, LORs, WAT/GD/PI prep, category certificates, loan pre-approval and more. Progress is saved on your device only. |
 | World map | Pick a continent, then a country, to see sourced tuition and starting salaries for a leading programme (ISB, CEIBS, LBS, INSEAD, IE, Stanford GSB, Rotman, AGSM, UCT GSB). |
-| 30-second check | Enter today's salary and a destination; get payback period, value added (NPV) and a verdict. |
+| 60-second complete picture | Enter today's salary and a destination; get payback period, value added (NPV), starting salary, annual return (IRR), break-even salary and a verdict — all at once. |
 | Payback ranking | Ranks every destination by how fast *your* salary pays it back. |
 | India & exams | A profile finder for 51 Indian B-schools: pick your exam (CAT, XAT, NMAT, SNAP, CMAT, MAH-CET, GMAT, IELTS, TOEFL), score, category (General, EWS, OBC-NCL, SC, ST, PwD), gender, current salary and budget. See colleges within reach, those that meet your category minimum, fee, average salary and **payback for you**. Shortlist, side-by-side comparison of up to 3 colleges, a fee-vs-salary chart and a sortable table with NIRF 2025 ranks. |
 | Full calculator | Two programmes side by side: tax, loan EMI and schedule, scholarship, signing bonus, risk scenarios, sensitivity table, break-even salary. |

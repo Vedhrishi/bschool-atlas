@@ -218,6 +218,26 @@
     $('indiaSources').innerHTML = t('in.sources') + ': ' + Object.values(ID.sources).map((s) => '<a href="' + esc(s.url) + '" target="_blank" rel="noopener">' + esc(s.label) + '</a>').join(' · ');
   }
 
+  // ---- application checklist: generic, device-only progress tracker ----
+  const CHK_ITEMS = ['chk.1', 'chk.2', 'chk.3', 'chk.4', 'chk.5', 'chk.6', 'chk.7', 'chk.8', 'chk.9', 'chk.10', 'chk.11', 'chk.12', 'chk.13', 'chk.14'];
+  let checked = {};
+  try { checked = JSON.parse(localStorage.getItem('bsa-checklist') || '{}'); } catch (e) {}
+  const saveChecked = () => { try { localStorage.setItem('bsa-checklist', JSON.stringify(checked)); } catch (e) {} };
+  function checklist() {
+    const done = CHK_ITEMS.filter((k) => checked[k]).length;
+    $('chkList').innerHTML = CHK_ITEMS.map((k, i) =>
+      '<label class="chk-item' + (checked[k] ? ' done' : '') + '"><input type="checkbox" data-chk="' + k + '"' + (checked[k] ? ' checked' : '') + '><span class="chk-num">' + (i + 1) + '</span><span>' + esc(t(k)) + '</span></label>').join('');
+    $('chkBarFill').style.width = (done / CHK_ITEMS.length * 100) + '%';
+    $('chkProgressLabel').textContent = t('chk.progress', { done, total: CHK_ITEMS.length });
+  }
+  $('chkList').addEventListener('change', (e) => {
+    const c = e.target.closest('[data-chk]'); if (!c) return;
+    if (c.checked) checked[c.dataset.chk] = true; else delete checked[c.dataset.chk];
+    saveChecked(); checklist();
+  });
+  $('chkReset').addEventListener('click', () => { checked = {}; saveChecked(); checklist(); });
+  checklist();
+
   // ---- events ----
   $('examTabs').addEventListener('click', (e) => { const b = e.target.closest('button[data-ex]'); if (b) pickExam(b.dataset.ex); });
   ['examScore', 'pCat', 'pGender', 'pSalary', 'pBudget', 'pSort'].forEach((id) => $(id).addEventListener('input', finder));
@@ -244,7 +264,7 @@
     try { navigator.clipboard.writeText(text).then(() => { said.textContent = t('msg.summary'); }, () => { said.textContent = t('copy.manual'); }); } catch (e) { said.textContent = t('copy.manual'); }
   });
   $('shortPrint').addEventListener('click', () => window.print());
-  document.addEventListener('langchange', () => { finder(); examGrid(); });
+  document.addEventListener('langchange', () => { finder(); examGrid(); checklist(); });
 
   // Used by the sidebar search and recommended searches.
   window.IndiaPage = {

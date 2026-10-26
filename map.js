@@ -386,6 +386,8 @@
       st(t('q.payback'), r.payback === null ? t('q.over', { n: 20 }) : t('q.years', { n: r.payback.toFixed(1) }), r.payback === null ? 'neg' : '') +
       st(t('q.value'), fmt(r.npv, cur), r.npv >= 0 ? 'pos' : 'neg', r.npv) +
       st(t('q.salaryThere'), fmt(f.postSalary, cur), '', f.postSalary) +
+      st(t('q.irr'), r.irr === null ? '—' : (r.irr * 100).toFixed(1) + '%', r.irr !== null && r.irr >= 0 ? 'pos' : 'neg') +
+      st(t('q.breakeven'), r.breakEvenSalary === null ? '—' : fmt(r.breakEvenSalary, cur), '', r.breakEvenSalary === null ? undefined : r.breakEvenSalary) +
       '<div class="stat"><b><span class="stamp ' + rating.toLowerCase() + (rating !== lastRating ? ' pop' : '') + '">' + t('r.' + rating) + '</span></b><span>' + t('q.verdict') + '</span></div>';
     // Count money up from zero so the result lands with a little drama.
     if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {

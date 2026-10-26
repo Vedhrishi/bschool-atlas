@@ -3,23 +3,23 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>B-School Atlas</title>
+<title>B-School Atlas — Your complete MBA picture in 60 seconds</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="B-School Atlas by Pasupuleti VedhRishi: compare MBA destinations worldwide with sourced fees and salaries, payback, NPV and a 10-year price outlook.">
+<meta name="description" content="B-School Atlas by Pasupuleti VedhRishi: get your complete MBA picture in 60 seconds — payback, NPV, break-even salary and verdict for any destination worldwide, sourced and ranked.">
 <meta name="author" content="Pasupuleti VedhRishi">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2323212b'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%23ffb547' stroke-width='3.5'/%3E%3Ccircle cx='16' cy='16' r='4' fill='%23ff6b81'/%3E%3C/svg%3E">
 <meta name="theme-color" content="#23212b">
 <!-- Share preview. __SITE_URL__ is replaced with the live address by the GitHub Pages workflow. -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="B-School Atlas">
-<meta property="og:title" content="Is an MBA worth it? B-School Atlas">
-<meta property="og:description" content="Compare MBA destinations worldwide: sourced fees and salaries, payback, Indian B-school cut-offs by exam, and a 10-year price outlook.">
+<meta property="og:title" content="Your complete MBA picture in 60 seconds — B-School Atlas">
+<meta property="og:description" content="Payback, NPV, break-even salary and verdict for any MBA destination worldwide — sourced, ranked, and ready in 60 seconds.">
 <meta property="og:url" content="__SITE_URL__">
 <meta property="og:image" content="__SITE_URL__og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Is an MBA worth it? B-School Atlas">
+<meta name="twitter:title" content="Your complete MBA picture in 60 seconds — B-School Atlas">
 <meta name="twitter:image" content="__SITE_URL__og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -27,6 +27,7 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<script>try { if (localStorage.getItem('sbCollapsed') === '1') document.body.classList.add('sb-collapsed'); } catch (e) {}</script>
 <canvas id="sky" aria-hidden="true"></canvas>
 <canvas id="fx" aria-hidden="true"></canvas>
 
@@ -36,7 +37,7 @@
     <a class="brand" href="#overview"><span class="brand-mark" aria-hidden="true"></span>B-School Atlas</a>
     <button type="button" class="sb-close ghost" id="sbClose" data-i18n-aria="sb.close" aria-label="Close menu">✕</button>
   </div>
-  <p class="sb-tag" data-i18n="sb.tagline">MBA cost, cut-offs and payback in one place</p>
+  <p class="sb-tag" data-i18n="sb.tagline">Your complete MBA picture in 60 seconds</p>
   <div class="sb-search" role="search">
     <label class="sr" for="navSearch" data-i18n="sb.search">Search colleges, exams, countries</label>
     <input type="search" id="navSearch" autocomplete="off" spellcheck="false" data-i18n-ph="sb.search" placeholder="Search colleges, exams, countries" role="combobox" aria-expanded="false" aria-controls="navResults" aria-autocomplete="list">
@@ -52,6 +53,7 @@
     <label class="langpick"><span data-i18n="lang">Language</span><select id="lang"></select></label>
   </div>
 </aside>
+<button type="button" class="sb-toggle" id="sbToggle" aria-controls="sidebar" aria-expanded="true" data-i18n-aria="sb.collapse" aria-label="Collapse sidebar"><span class="sb-toggle-ic" aria-hidden="true">‹</span></button>
 <div class="sb-scrim" id="sbScrim" hidden></div>
 
 <div class="shell">
@@ -65,7 +67,8 @@
   <div class="hero-copy">
     <p class="eyebrow" data-i18n="hero.eyebrow">Sourced data · Global destinations · 10-year price outlook</p>
     <h1><span data-i18n="hero.h1a">Is an MBA</span> <span class="hl" data-i18n="hero.h1b">worth it?</span></h1>
-    <p class="lede" data-i18n="hero.lede">Pick a destination. See what the degree costs, what it pays, and how many years until it pays you back.</p>
+    <p class="tagline60" data-i18n="hero.tagline60">Your complete MBA picture in 60 seconds.</p>
+    <p class="lede" data-i18n="hero.lede">Pick a destination. See what the degree costs, what it pays, how many years until it pays you back, and what salary you'd need to break even — all at once.</p>
     <p class="credit" data-i18n-html="hero.credit">Created by <a class="author" href="https://www.linkedin.com/in/vedhrishi-pasupuleti" target="_blank" rel="noopener"><b>Pasupuleti VedhRishi</b></a> to help MBA applicants weigh cost, salary and payback before they commit.</p>
     <ol class="steps">
       <li><b>1</b><span data-i18n="steps.1">Pick where you want to study</span></li>
@@ -80,7 +83,7 @@
   </div>
 
   <form class="quick" id="quick" aria-labelledby="quickTitle">
-    <h2 id="quickTitle" data-i18n="q.title">30-second check</h2>
+    <h2 id="quickTitle" data-i18n="q.title">60-second complete picture</h2>
     <div class="ticket">
       <div class="route" aria-hidden="true">
         <div><small data-i18n="q.from">From</small><span data-i18n="q.you">YOU</span></div>
@@ -106,7 +109,7 @@
   <section class="card" id="rank">
     <h2 data-i18n="rank.title">Where your salary pays back fastest</h2>
     <div id="rankBars"></div>
-    <p class="note" data-i18n="rank.note">Same assumptions as the 30-second check. Tap a bar for details.</p>
+    <p class="note" data-i18n="rank.note">Same assumptions as the 60-second check. Tap a bar for details.</p>
   </section>
 
   <section class="card mapcard" id="atlas">
@@ -259,6 +262,17 @@
       <div class="actions"><button type="button" class="ghost" id="shortCopy" data-i18n="in.shortCopy">Copy shortlist</button><button type="button" class="ghost web-only" id="shortPrint" data-i18n="b.print">Print / Save as PDF</button><span class="muted" id="shortSaid" role="status"></span></div>
     </div>
     <div id="shortList"></div>
+  </section>
+
+  <section class="card checklist" id="checklistCard">
+    <div class="maphead">
+      <h2 data-i18n="chk.title">Application checklist</h2>
+      <span class="muted" id="chkProgressLabel"></span>
+    </div>
+    <p class="simple" data-i18n="chk.lede">Track where you are in the process. Saved on this device only — tick things off as you go.</p>
+    <div class="chk-bar" aria-hidden="true"><div class="chk-bar-fill" id="chkBarFill"></div></div>
+    <div id="chkList" class="chk-list"></div>
+    <button type="button" class="ghost tiny" id="chkReset" data-i18n="chk.reset">Reset checklist</button>
   </section>
 
   <section class="card" id="chartCard">

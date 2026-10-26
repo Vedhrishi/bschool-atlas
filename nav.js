@@ -13,6 +13,7 @@
     glossary: { view: 'calc', id: 'glossary' },
     finder: { view: 'india', id: 'finderCard' },
     shortlist: { view: 'india', id: 'shortCard' },
+    checklist: { view: 'india', id: 'checklistCard' },
     compare: { view: 'india', id: 'compareCard', fallback: 'finderCard' },
     chart: { view: 'india', id: 'chartCard' },
     colleges: { view: 'india', id: 'collegesCard' },
@@ -98,7 +99,7 @@
 
     const GROUPS = [
       { g: 'sb.start', items: [['overview', 'sb.overview'], ['ranking', 'sb.ranking']] },
-      { g: 'sb.india', items: [['finder', 'sb.finder'], ['shortlist', 'sb.shortlist'], ['compare', 'sb.compare'], ['chart', 'sb.chart'], ['colleges', 'sb.colleges'], ['exams', 'sb.exams']] },
+      { g: 'sb.india', items: [['finder', 'sb.finder'], ['shortlist', 'sb.shortlist'], ['checklist', 'sb.checklist'], ['compare', 'sb.compare'], ['chart', 'sb.chart'], ['colleges', 'sb.colleges'], ['exams', 'sb.exams']] },
       { g: 'sb.abroad', items: [['atlas', 'sb.map'], ['countries', 'sb.countries'], ['rates', 'sb.rates']] },
       { g: 'sb.tools', items: [['calc', 'sb.calc'], ['glossary', 'sb.glossary']] },
       { g: 'sb.about', items: [['sources', 'sb.sources'], ['author', 'sb.author']] },
@@ -221,14 +222,25 @@
     $('sbClose').addEventListener('click', closeDrawer);
     $('sbScrim').addEventListener('click', closeDrawer);
     $('sbNav').addEventListener('click', (e) => { if (e.target.closest('a.sb-item') && mobile()) closeDrawer(); });
+
+    // ---- collapse rail (desktop: sidebar can be closed to give the content more room) ----
+    function setCollapsed(on) {
+      document.body.classList.toggle('sb-collapsed', on);
+      $('sbToggle').setAttribute('aria-expanded', String(!on));
+      try { localStorage.setItem('sbCollapsed', on ? '1' : '0'); } catch (e) {}
+    }
+    $('sbToggle').addEventListener('click', () => setCollapsed(!document.body.classList.contains('sb-collapsed')));
+    setCollapsed(document.body.classList.contains('sb-collapsed'));
+
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && document.body.classList.contains('sb-open')) closeDrawer();
       const typing = /INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName);
       if (e.key === '/' && !typing) { e.preventDefault(); if (mobile()) openDrawer(true); else $('navSearch').focus(); }
+      if (e.key === '[' && !typing && !mobile()) { e.preventDefault(); setCollapsed(!document.body.classList.contains('sb-collapsed')); }
     });
 
     // ---- active item: follows the hash and, within a view, the scroll position ----
-    const VIEW_KEYS = { map: ['overview', 'ranking', 'atlas', 'rates', 'sources'], india: ['finder', 'shortlist', 'compare', 'chart', 'colleges', 'exams'], calc: ['calc', 'glossary'] };
+    const VIEW_KEYS = { map: ['overview', 'ranking', 'atlas', 'rates', 'sources'], india: ['finder', 'shortlist', 'checklist', 'compare', 'chart', 'colleges', 'exams'], calc: ['calc', 'glossary'] };
     function markActive() {
       const view = document.body.dataset.view || 'map';
       const keys = VIEW_KEYS[view] || [];
